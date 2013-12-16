@@ -43,7 +43,14 @@ class OrscLinks {
 
 
   public:
-    populate_link_tables();
-}
+    OrscLinks() {};
+    ~OrscLinks() {};
+
+    void addRegion(const L1CaloRegion &reg);
+
+    void addEM(const L1CaloEmCand &cand);
+
+    void populate_link_tables();
+};
 
 #endif

@@ -17,6 +17,8 @@
 #include "DataFormats/L1CaloTrigger/interface/L1CaloEmCand.h"
 #include "DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h"
 
+#include "L1Trigger/UCT2015/interface/OrscLinks.h"
+
 
 class OrscLinkPatterns : public edm::EDAnalyzer {
   public :
@@ -51,8 +53,16 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   iEvent.getByLabel("uctDigis", newRegions);
   iEvent.getByLabel("uctDigis", newEMCands);
 
-  for (int i = 0; i < 10; ++i) {
-    outfile << i << std::endl;
+  OrscLinks links;
+
+  for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
+      newRegion != newRegions->end(); newRegion++) {
+    links.addRegion(*newRegion);
+  }
+
+  for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
+      egtCand != newEMCands->end(); egtCand++) {
+    links.addEM(*egtCand);
   }
 }
 
