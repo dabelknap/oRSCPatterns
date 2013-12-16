@@ -4,4 +4,6 @@
 *.pyc
 *.json
 *.pdf
+*.swp
+*~
 CVS
