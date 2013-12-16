@@ -3,11 +3,57 @@
 
 void
 OrscLinks::addRegion(const L1CaloRegion &reg) {
+  unsigned card = reg.rctCard();
+  unsigned region = reg.rctRegionIndex();
+  unsigned et = reg.et();
+  bool tau = reg.tauVeto();
+  bool mip = reg.mip();
+  bool overflow = reg.overFlow();
+
+  for (int i = 0; i < 10; ++i) {
+    if (overflow) {
+      RC[card][region][i] = 0x1;
+    }
+    else {
+      RC[card][region][i] = et & 0x1;
+      et >>= 1;
+    }
+  }
+
+  RCEtId[card][region] = (!mip && !tau) & 0x1;
 }
 
 
 void
 OrscLinks::addEM(const L1CaloEmCand &cand) {
+  unsigned index = cand.index();
+  unsigned card = cand.rctCard();
+  unsigned region = cand.rctRegion();
+  unsigned rank = cand.rank();
+  bool iso = cand.isolated();
+
+  if (iso) {
+    for (int i = 0; i < 6; ++i) {
+      NE[index][i] = rank & 0x1;
+      rank >>= 1;
+    }
+    for (int i = 0; i < 3; ++i) {
+      NECard[index][i] = card & 0x1;
+      card >>= 1;
+    }
+    NEReg[index] = region & 0x1;
+  }
+  else {
+    for (int i = 0; i < 6; ++i) {
+      IE[index][i] = rank & 0x1;
+      rank >>= 1;
+    }
+    for (int i = 0; i < 3; ++i) {
+      IECard[index][i] = card & 0x1;
+      card >>= 1;
+    }
+    IEReg[index] = region & 0x1;
+  }
 }
 
 

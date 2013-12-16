@@ -23,23 +23,25 @@ class OrscLinks {
     // Index: iso EG rank, bit number
     uint8_t IECard[4][3];
 
-    // Index: iso EG rank
+    // Index: iso EG index
     uint8_t IEReg[4];
 
-    // Index: iso EG rank, bit number
+    // Index: iso EG index, bit number
     uint8_t IE[4][6];
 
-    // Index: non-iso EG rank, bit number
+    // Index: non-iso EG index, bit number
     uint8_t NECard[4][3];
 
-    // Index: non-iso EG rank
+    // Index: non-iso EG index
     uint8_t NEReg[4];
 
-    // Index: non-iso EG rank, bit number
+    // Index: non-iso EG index, bit number
     uint8_t NE[4][6];
 
     uint8_t Link1 [16][8];
     uint8_t Link2 [16][8];
+
+    void populate_link_tables();
 
 
   public:
@@ -50,7 +52,6 @@ class OrscLinks {
 
     void addEM(const L1CaloEmCand &cand);
 
-    void populate_link_tables();
 };
 
 #endif
