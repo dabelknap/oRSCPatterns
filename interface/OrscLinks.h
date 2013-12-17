@@ -41,17 +41,21 @@ class OrscLinks {
     uint8_t Link1 [16][8];
     uint8_t Link2 [16][8];
 
-    void populate_link_tables();
+
+    bool table_filled;
 
 
   public:
-    OrscLinks() {};
+    OrscLinks() { table_filled = false; };
     ~OrscLinks() {};
+
+    void populate_link_tables();
 
     void addRegion(const L1CaloRegion &reg);
 
     void addEM(const L1CaloEmCand &cand);
 
+    std::vector<uint32_t> link_values(int link);
 };
 
 #endif

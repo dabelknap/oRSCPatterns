@@ -2,6 +2,8 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "stdint.h"
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -48,22 +50,49 @@ OrscLinkPatterns::~OrscLinkPatterns() {
 
 void
 OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+  using std::cout;
+  using std::endl;
+
   using namespace edm;
 
   iEvent.getByLabel("uctDigis", newRegions);
   iEvent.getByLabel("uctDigis", newEMCands);
 
+  cout << "Declare links" << endl;
+
   OrscLinks links;
+
+  cout << "Parse regions" << endl;
 
   for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
       newRegion != newRegions->end(); newRegion++) {
     links.addRegion(*newRegion);
   }
 
+  cout << "Parse EM" << endl;
+
   for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
       egtCand != newEMCands->end(); egtCand++) {
     links.addEM(*egtCand);
   }
+
+  cout << "Parse links to vectors" << endl;
+
+  links.populate_link_tables();
+
+  std::vector<uint32_t> link1 = links.link_values(1);
+  std::vector<uint32_t> link2 = links.link_values(2);
+
+  outfile << "Link0 4";
+  for (int i = 0; i < 4; ++i) {
+    outfile << " " << std::hex << link1.at(i);
+  }
+  outfile << std::endl;
+  outfile << "Link1 4";
+  for (int i = 0; i < 4; ++i) {
+    outfile << " " << std::hex << link2.at(i);
+  }
+  outfile << std::endl;
 }
 
 

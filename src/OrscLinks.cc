@@ -57,6 +57,40 @@ OrscLinks::addEM(const L1CaloEmCand &cand) {
 }
 
 
+std::vector<uint32_t>
+OrscLinks::link_values(int link_number) {
+  std::vector<uint32_t> link;
+
+  uint32_t val = 0;
+
+  for (int i = 0; i < 16; i++) {
+    for (int j = 0; j < 8; j++) {
+      val <<= 1;
+
+      if (i == 0) {
+        continue;
+      }
+
+      if (link_number == 1) {
+        val += Link1[i][j] & 0x1;
+      }
+      else if (link_number == 2) {
+        val += Link2[i][j] & 0x1;
+      }
+      else {
+        perror("Invalid link number given");
+      }
+
+      if (i % 4 == 3) {
+        link.push_back(val);
+        val = 0;
+      }
+    }
+  }
+  return link;
+}
+
+
 void
 OrscLinks::populate_link_tables() {
   uint8_t L1 [16][8] = {
@@ -104,4 +138,6 @@ OrscLinks::populate_link_tables() {
       Link2[i][j] = L2[i][j];
     }
   }
+
+  table_filled = true;
 }
