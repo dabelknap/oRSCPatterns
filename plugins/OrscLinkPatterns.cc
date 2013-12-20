@@ -36,7 +36,8 @@ class OrscLinkPatterns : public edm::EDAnalyzer {
     edm::Handle<L1CaloRegionCollection> newRegions;
     edm::Handle<L1CaloEmCollection> newEMCands;
 
-    std::ofstream outfile;
+    std::ofstream outfile1;
+    std::ofstream outfile2;
 };
 
 
@@ -60,51 +61,72 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   cout << "Declare links" << endl;
 
-  OrscLinks links;
+  OrscLinks link_crate[18];
 
   cout << "Parse regions" << endl;
 
   for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
       newRegion != newRegions->end(); newRegion++) {
-    links.addRegion(*newRegion);
+    link_crate[newRegion->rctCrate()].addRegion(*newRegion);
   }
 
   cout << "Parse EM" << endl;
 
   for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
       egtCand != newEMCands->end(); egtCand++) {
-    links.addEM(*egtCand);
+    link_crate[egtCand->rctCrate()].addEM(*egtCand);
   }
 
   cout << "Parse links to vectors" << endl;
 
-  links.populate_link_tables();
+  for (int i = 0; i < 18; ++i) {
+    link_crate[i].populate_link_tables();
 
-  std::vector<uint32_t> link1 = links.link_values(1);
-  std::vector<uint32_t> link2 = links.link_values(2);
+    std::vector<uint32_t> link1 = link_crate[i].link_values(1);
+    std::vector<uint32_t> link2 = link_crate[i].link_values(2);
 
-  outfile << "Link0 4";
-  for (int i = 0; i < 4; ++i) {
-    outfile << " " << std::hex << link1.at(i);
+    cout << "Parsing crate " << i << endl;
+
+    if (i < 9) {
+      outfile1 << "Link" << 2*i << " 4";
+      for (int j = 0; j < 4; ++j) {
+        outfile1 << " " << std::hex << link1.at(j) << std::dec;
+      }
+      outfile1 << std::endl;
+      outfile1 << "Link" << 2*i+1 << " 4";
+      for (int j = 0; j < 4; ++j) {
+        outfile1 << " " << std::hex << link2.at(j) << std::dec;
+      }
+      outfile1 << std::endl;
+    }
+    else {
+      int I = i % 9;
+      outfile2 << "Link" << 2*I << " 4";
+      for (int j = 0; j < 4; ++j) {
+        outfile2 << " " << std::hex << link1.at(j) << std::dec;
+      }
+      outfile2 << std::endl;
+      outfile2 << "Link" << 2*I+1 << " 4";
+      for (int j = 0; j < 4; ++j) {
+        outfile2 << " " << std::hex << link2.at(j) << std::dec;
+      }
+      outfile2 << std::endl;
+    }
   }
-  outfile << std::endl;
-  outfile << "Link1 4";
-  for (int i = 0; i < 4; ++i) {
-    outfile << " " << std::hex << link2.at(i);
-  }
-  outfile << std::endl;
 }
 
 
 void
 OrscLinkPatterns::beginJob() {
-  outfile.open("example.txt");
+  outfile1.open("example1.txt");
+  outfile2.open("example2.txt");
 }
 
 
 void
 OrscLinkPatterns::endJob() {
-  outfile.close();
+  outfile1.close();
+  outfile2.close();
 }
 
 

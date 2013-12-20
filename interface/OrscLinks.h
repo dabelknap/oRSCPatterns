@@ -41,7 +41,6 @@ class OrscLinks {
     uint8_t Link1 [16][8];
     uint8_t Link2 [16][8];
 
-
     bool table_filled;
 
 
