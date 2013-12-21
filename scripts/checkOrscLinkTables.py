@@ -5,7 +5,7 @@ Reads over OrscLinks.cc and checks that the link bitfield table is valid. It
 makes sure that all named bits are represented the appropriate number of times.
 It does not check the arrangement of the bits.
 
-Author: D. Ausitn Belknap, UW-Madison
+Author: D. Austin Belknap, UW-Madison
 """
 
 import re
@@ -23,7 +23,7 @@ def expected_counts():
 
     out["0"] = 18
     out["ElecBC0"] = 2
-    out["ElecBC0"] = 2
+    out["JetBC0"] = 2
 
     # For each RC
     for i in xrange(7):
