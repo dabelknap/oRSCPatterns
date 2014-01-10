@@ -97,12 +97,12 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
     // Crates 0 to 8 got in file #1
     if (i < 9) {
-      outfile1 << "Link" << 2*i << " 4";
+      outfile1 << 2*i << " 4";
       for (int j = 0; j < 4; ++j) {
         outfile1 << " " << std::hex << link1.at(j) << std::dec;
       }
       outfile1 << std::endl;
-      outfile1 << "Link" << 2*i+1 << " 4";
+      outfile1 << 2*i+1 << " 4";
       for (int j = 0; j < 4; ++j) {
         outfile1 << " " << std::hex << link2.at(j) << std::dec;
       }
@@ -111,12 +111,12 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     // Crates 9 tp 17 go in file #2
     else {
       int I = i % 9;
-      outfile2 << "Link" << 2*I << " 4";
+      outfile2 << 2*I << " 4";
       for (int j = 0; j < 4; ++j) {
         outfile2 << " " << std::hex << link1.at(j) << std::dec;
       }
       outfile2 << std::endl;
-      outfile2 << "Link" << 2*I+1 << " 4";
+      outfile2 << 2*I+1 << " 4";
       for (int j = 0; j < 4; ++j) {
         outfile2 << " " << std::hex << link2.at(j) << std::dec;
       }
