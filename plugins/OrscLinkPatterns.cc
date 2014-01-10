@@ -59,33 +59,23 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   iEvent.getByLabel("uctDigis", newRegions);
   iEvent.getByLabel("uctDigis", newEMCands);
 
-  cout << "Declare links" << endl;
-
   OrscLinks link_crate[18];
-
-  cout << "Parse regions" << endl;
 
   for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
       newRegion != newRegions->end(); newRegion++) {
     link_crate[newRegion->rctCrate()].addRegion(*newRegion);
   }
 
-  cout << "Parse EM" << endl;
-
   for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
       egtCand != newEMCands->end(); egtCand++) {
     link_crate[egtCand->rctCrate()].addEM(*egtCand);
   }
-
-  cout << "Parse links to vectors" << endl;
 
   for (int i = 0; i < 18; ++i) {
     link_crate[i].populate_link_tables();
 
     std::vector<uint32_t> link1 = link_crate[i].link_values(1);
     std::vector<uint32_t> link2 = link_crate[i].link_values(2);
-
-    cout << "Parsing crate " << i << endl;
 
     if (i < 9) {
       outfile1 << "Link" << 2*i << " 4";
