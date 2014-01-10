@@ -1,3 +1,12 @@
+/**
+ * Filename: OrscLinks.h
+ *
+ * Description: Abstracts the JSC output bits for a single RCT crate to be
+ *              arranged for use with the oRSC optical links.
+ *
+ * Author: D. Austin Belknap, UW-Madison
+ */
+
 #ifndef _ORSCLINKS_h
 #define _ORSCLINKS_h
 
@@ -10,6 +19,11 @@
 #include "DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h"
 
 
+/**
+ * This class abstracts the JSC bits for a single RCT crate. It parses Regions
+ * and EM Candidates from the RCT emulator and extracts the relevant bits. It
+ * can then arrange the bits into the bitfields used for the oRSC optical links.
+ */
 class OrscLinks {
   private:
     uint8_t ElecBC0, JetBC0;

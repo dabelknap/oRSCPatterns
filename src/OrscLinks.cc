@@ -1,6 +1,18 @@
+/**
+ * Filename: OrscLinks.cc
+ *
+ * Description: Abstracts the JSC output bits for a single RCT crate to be
+ *              arranged for use with the oRSC optical links.
+ *
+ * Author: D. Austin Belknap, UW-Madison
+ */
+
 #include "L1Trigger/UCT2015/interface/OrscLinks.h"
 
 
+/**
+ * Add a L1CaloRegion, and parse the bits
+ */
 void
 OrscLinks::addRegion(const L1CaloRegion &reg) {
   unsigned card = reg.rctCard();
@@ -10,6 +22,7 @@ OrscLinks::addRegion(const L1CaloRegion &reg) {
   bool mip = reg.mip();
   bool overflow = reg.overFlow();
 
+  // separate the 10 region bits
   for (int i = 0; i < 10; ++i) {
     if (overflow) {
       RC[card][region][i] = 0x1;
@@ -23,7 +36,9 @@ OrscLinks::addRegion(const L1CaloRegion &reg) {
   RCEtId[card][region] = (!mip && !tau) & 0x1;
 }
 
-
+/**
+ * Add a L1CaloEmCand and parse the bits
+ */
 void
 OrscLinks::addEM(const L1CaloEmCand &cand) {
   unsigned index = cand.index();
@@ -32,6 +47,8 @@ OrscLinks::addEM(const L1CaloEmCand &cand) {
   unsigned rank = cand.rank();
   bool iso = cand.isolated();
 
+  // Separate and store the 6 rank bits, 3 card bits, region bit, for iso and
+  // non-iso EM candidates.
   if (iso) {
     for (int i = 0; i < 6; ++i) {
       NE[index][i] = rank & 0x1;
@@ -57,6 +74,9 @@ OrscLinks::addEM(const L1CaloEmCand &cand) {
 }
 
 
+/**
+ * Output the link values as four 32-bit integers.
+ */
 std::vector<uint32_t>
 OrscLinks::link_values(int link_number) {
   std::vector<uint32_t> link;
@@ -91,6 +111,9 @@ OrscLinks::link_values(int link_number) {
 }
 
 
+/**
+ * Arrange the JSC output bits into the bitfields for the 2 oRSC optical links.
+ */
 void
 OrscLinks::populate_link_tables() {
   uint8_t L1 [16][8] = {

@@ -1,9 +1,18 @@
+"""
+This cfg file uses the RCT emulator to produce RCT digis which are arranged into
+the bitfields for the oRSC optical links, which are output to two text files to
+be loaded on two oRSCs.
+
+Author: D. Austin Belknap, UW-Madison
+"""
+
 import FWCore.ParameterSet.Config as cms
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-options.inputFiles = 'file:/hdfs/store/user/tapas/2012-08-01-CRAB_ZEESkim/skim_10_1_wd2.root'
+options.inputFiles = (
+    'file:/hdfs/store/user/tapas/2012-08-01-CRAB_ZEESkim/skim_10_1_wd2.root')
 options.maxEvents = 10
 options.parseArguments()
 

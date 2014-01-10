@@ -1,3 +1,15 @@
+/**
+ * Filename: OrscLinkPatterns.cc
+ *
+ * Description: This producer creates 18 "OrscLinks" objects (one for each RCT
+ *              crate). It then loops over the Regions and EM Candidates from
+ *              the RCT emulator and loads them into the OrscLink objects. The
+ *              optical link layout of the bits are extracted from the OrscLink
+ *              objects and loaded into two text files: one for each oRSC.
+ *
+ * Author: D. Austin Belknap, UW-Madison
+ */
+
 // system include files
 #include <memory>
 #include <iostream>
@@ -56,27 +68,34 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   using namespace edm;
 
+  // Grab Region and EM collections
   iEvent.getByLabel("uctDigis", newRegions);
   iEvent.getByLabel("uctDigis", newEMCands);
 
+  // Create OrscLink objects for each crate
   OrscLinks link_crate[18];
 
+  // Load each region into the OrscLink object of its crate
   for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
       newRegion != newRegions->end(); newRegion++) {
     link_crate[newRegion->rctCrate()].addRegion(*newRegion);
   }
 
+  // Load each EM Candidate into the OrscLink object of its crate
   for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
       egtCand != newEMCands->end(); egtCand++) {
     link_crate[egtCand->rctCrate()].addEM(*egtCand);
   }
 
+  // For each OrscLink crate object, print the optical link layouts into two
+  // text files.
   for (int i = 0; i < 18; ++i) {
     link_crate[i].populate_link_tables();
 
     std::vector<uint32_t> link1 = link_crate[i].link_values(1);
     std::vector<uint32_t> link2 = link_crate[i].link_values(2);
 
+    // Crates 0 to 8 got in file #1
     if (i < 9) {
       outfile1 << "Link" << 2*i << " 4";
       for (int j = 0; j < 4; ++j) {
@@ -89,6 +108,7 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       }
       outfile1 << std::endl;
     }
+    // Crates 9 tp 17 go in file #2
     else {
       int I = i % 9;
       outfile2 << "Link" << 2*I << " 4";
