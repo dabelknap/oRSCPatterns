@@ -13,7 +13,7 @@ options = VarParsing('analysis')
 
 options.inputFiles = (
     'file:/hdfs/store/user/tapas/2012-08-01-CRAB_ZEESkim/skim_10_1_wd2.root')
-options.maxEvents = 10
+options.maxEvents = 1
 options.parseArguments()
 
 process = cms.Process("ORSCPATTERNS")
