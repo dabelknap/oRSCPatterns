@@ -25,8 +25,8 @@ hackHCALMIPs = cms.EDProducer(
 
 uctDigis = cms.EDProducer(
     "L1RCTProducer",
-    hcalDigis = cms.VInputTag(cms.InputTag("hcalDigis")),
-    #hcalDigis = cms.VInputTag(cms.InputTag("hackHCALMIPs")),
+    #hcalDigis = cms.VInputTag(cms.InputTag("hcalDigis")),
+    hcalDigis = cms.VInputTag(cms.InputTag("hackHCALMIPs")),
     useEcal = cms.bool(True),
     useHcal = cms.bool(True),
     ecalDigis = cms.VInputTag(cms.InputTag("ecalDigis:EcalTriggerPrimitives")),

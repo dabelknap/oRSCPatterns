@@ -31,7 +31,7 @@
 #include "DataFormats/L1CaloTrigger/interface/L1CaloEmCand.h"
 #include "DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h"
 
-#include "L1Trigger/UCT2015/interface/OrscLinks.h"
+#include "L1Trigger/oRSCPatterns/interface/OrscLinks.h"
 
 
 class OrscLinkPatterns : public edm::EDAnalyzer {

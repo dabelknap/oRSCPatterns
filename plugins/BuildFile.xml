@@ -1,6 +1,6 @@
-<library   file="*.cc" name="L1TriggerUCT20125Plugins">
+<library   file="*.cc" name="L1TriggeroRSCPatternsPlugins">
   <flags EDM_PLUGIN="1"/>
-  <use name="L1Trigger/UCT2015"/>
+  <use name="L1Trigger/oRSCPatterns"/>
   <use name="FWCore/Framework"/>
   <use name="FWCore/PluginManager"/>
   <use name="FWCore/ParameterSet"/>

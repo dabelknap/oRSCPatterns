@@ -30,7 +30,7 @@ process.source = cms.Source(
     fileNames = cms.untracked.vstring(options.inputFiles)
     )
 
-process.load("L1Trigger.UCT2015.emulation_cfi")
+process.load("L1Trigger.oRSCPatterns.emulation_cfi")
 process.load("Configuration.Geometry.GeometryIdeal_cff")
 
 process.patterns = cms.EDAnalyzer('OrscLinkPatterns')
