@@ -26,34 +26,42 @@
  */
 class OrscLinks {
   private:
-    uint8_t ElecBC0, JetBC0;
+    // RC Et, Index: RC number, region, bit number
+    uint8_t RCEt[7][2][10];
 
-    // Index: RC number, region, bit number
-    uint8_t RC[7][2][10];
+    // RC Tau Veto, Index: RC number, region
+    uint8_t RCTau[7][2];
 
-    // Index: RC number, region
-    uint8_t RCEtId[7][2];
+    // RC Overflow, Index: RC number, region
+    uint8_t RCOf[7][2];
 
-    // Index: iso EG rank, bit number
-    uint8_t IECard[4][3];
+    // RC HAD Veto (MIP), Index: RC number, region
+    uint8_t RCHad[7][2];
 
-    // Index: iso EG index
-    uint8_t IEReg[4];
+    // HF Finegrain, Index: Region
+    uint8_t HFFg[8];
 
-    // Index: iso EG index, bit number
-    uint8_t IE[4][6];
+    // HF Et, Index: Region, bit number
+    uint8_t HFEt[8][8];
 
-    // Index: non-iso EG index, bit number
-    uint8_t NECard[4][3];
 
-    // Index: non-iso EG index
-    uint8_t NEReg[4];
+    // Non-Iso EG position (0 Region, 1-3 card)
+    // Index: candidate index, bit-number
+    uint8_t NEPos[4][4];
 
-    // Index: non-iso EG index, bit number
-    uint8_t NE[4][6];
+    // Non-Iso EG Et, Index: cand. index, bit number
+    uint8_t NEEt[4][6];
 
-    uint8_t Link1 [16][8];
-    uint8_t Link2 [16][8];
+    // Iso EG position (0 Region, 1-3 card)
+    // Index: candidate index, bit-number
+    uint8_t IEPos[4][4];
+
+    // Iso EG Et, Index: cand. index, bit number
+    uint8_t IEEt[4][6];
+
+
+    uint8_t Link1 [24][8];
+    uint8_t Link2 [24][8];
 
     bool table_filled;
 
