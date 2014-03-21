@@ -11,6 +11,7 @@
 #define _ORSCLINKS_h
 
 #include <iostream>
+#include <stdexcept>
 #include <stdint.h>
 
 #include "DataFormats/L1CaloTrigger/interface/L1CaloCollections.h"
