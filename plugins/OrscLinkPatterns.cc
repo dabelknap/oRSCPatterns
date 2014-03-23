@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 #include "stdint.h"
 
 // user include files
@@ -97,28 +98,28 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
     // Crates 0 to 8 got in file #1
     if (i < 9) {
-      outfile1 << 2*i << " 4";
-      for (int j = 0; j < 4; ++j) {
-        outfile1 << " " << std::hex << link1.at(j) << std::dec;
+      outfile1 << std::setw(2) << 2*i << " 4";
+      for (int j = 0; j < 6; ++j) {
+        outfile1 << " " << std::setw(9) << std::hex << int(link1.at(j)) << std::dec;
       }
       outfile1 << std::endl;
-      outfile1 << 2*i+1 << " 4";
-      for (int j = 0; j < 4; ++j) {
-        outfile1 << " " << std::hex << link2.at(j) << std::dec;
+      outfile1 << std::setw(2) << 2*i+1 << " 4";
+      for (int j = 0; j < 6; ++j) {
+        outfile1 << " " << std::setw(9) << std::hex << int(link2.at(j)) << std::dec;
       }
       outfile1 << std::endl;
     }
     // Crates 9 tp 17 go in file #2
     else {
       int I = i % 9;
-      outfile2 << 2*I << " 4";
-      for (int j = 0; j < 4; ++j) {
-        outfile2 << " " << std::hex << link1.at(j) << std::dec;
+      outfile2 << std::setw(2) << 2*I << " 4";
+      for (int j = 0; j < 6; ++j) {
+        outfile2 << " " << std::setw(9) << std::hex << int(link1.at(j)) << std::dec;
       }
       outfile2 << std::endl;
-      outfile2 << 2*I+1 << " 4";
-      for (int j = 0; j < 4; ++j) {
-        outfile2 << " " << std::hex << link2.at(j) << std::dec;
+      outfile2 << std::setw(2) << 2*I+1 << " 4";
+      for (int j = 0; j < 6; ++j) {
+        outfile2 << " " << std::setw(9) << std::hex << int(link2.at(j)) << std::dec;
       }
       outfile2 << std::endl;
     }
@@ -128,8 +129,8 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 void
 OrscLinkPatterns::beginJob() {
-  outfile1.open("example1.txt");
-  outfile2.open("example2.txt");
+  outfile1.open("example1.txt", std::ofstream::out);
+  outfile2.open("example2.txt", std::ofstream::out);
 }
 
 
