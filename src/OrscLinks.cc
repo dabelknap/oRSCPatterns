@@ -153,21 +153,23 @@ OrscLinks::link_values(int link_number) {
  */
 void
 OrscLinks::print_table(int link) {
+  uint8_t (*Link)[24][8];
+
   if (link == 1) {
-    for (int i = 0; i < 24; i++) {
-      for (int j = 0; j < 8; j++) {
-        std::cout << int(Link1[i][j]) << " ";
-      }
-      std::cout << std::endl;
-    }
+    Link = &Link1;
   }
   else if (link == 2) {
-    for (int i = 0; i < 24; i++) {
-      for (int j = 0; j < 8; j++) {
-        std::cout << int(Link2[i][j]) << " ";
-      }
-      std::cout << std::endl;
+    Link = &Link2;
+  }
+  else {
+    throw std::invalid_argument("Invalid link number given.");
+  }
+
+  for (int i = 0; i < 24; i++) {
+    for (int j = 0; j < 8; j++) {
+      std::cout << (int)(*Link)[i][j] << " ";
     }
+    std::cout << std::endl;
   }
 }
 
