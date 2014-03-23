@@ -214,7 +214,7 @@ OrscLinks::populate_link_tables() {
 
   // copy values into the class member arrays
   for (int i = 0; i < 24; i++) {
-    for (int j = 0; j < 24; j++) {
+    for (int j = 0; j < 8; j++) {
       Link1[i][j] = L1[i][j];
       Link2[i][j] = L2[i][j];
     }
