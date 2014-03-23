@@ -77,6 +77,8 @@ class OrscLinks {
 
     void addEM(const L1CaloEmCand &cand);
 
+    void print_table(int link);
+
     std::vector<uint32_t> link_values(int link);
 };
 

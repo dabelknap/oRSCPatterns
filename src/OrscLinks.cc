@@ -153,6 +153,30 @@ OrscLinks::link_values(int link_number) {
 
 
 /**
+ * Print out a link table in raw binary format
+ */
+void
+OrscLinks::print_table(int link) {
+  if (link == 1) {
+    for (int i = 0; i < 24; i++) {
+      for (int j = 0; j < 8; j++) {
+        std::cout << int(Link1[i][j]) << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+  else if (link == 2) {
+    for (int i = 0; i < 24; i++) {
+      for (int j = 0; j < 8; j++) {
+        std::cout << int(Link2[i][j]) << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+}
+
+
+/**
  * Arrange the JSC output bits into the bitfields for the 2 oRSC optical links.
  */
 void
