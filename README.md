@@ -24,7 +24,7 @@ scram b -j 4
 ```
 
 ###Running
-This runs over a single event and produces two files: `example1.txt` and `example2.txt`. Each file contains the data for 18 optical links, represeting all 36 links for the full RCT system. We use two files to load onto two separate oRSCs for simulating full RCT at 904.
+This can run over multiple events and produce a single text file: `output.txt`. The file contains the data represeting all 36 links for the full RCT system.
 ```sh
 cd L1Trigger/oRSCPatterns/test
 cmsRun makeOrscLinkPatterns.py

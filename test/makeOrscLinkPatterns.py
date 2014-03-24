@@ -1,7 +1,7 @@
 """
 This cfg file uses the RCT emulator to produce RCT digis which are arranged into
-the bitfields for the oRSC optical links, which are output to two text files to
-be loaded on two oRSCs.
+the bitfields for the oRSC optical links, which are output to a single text file
+which can be parsed and loaded onto oRSCs.
 
 Author: D. Austin Belknap, UW-Madison
 """
