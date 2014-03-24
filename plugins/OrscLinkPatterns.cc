@@ -5,7 +5,7 @@
  *              crate). It then loops over the Regions and EM Candidates from
  *              the RCT emulator and loads them into the OrscLink objects. The
  *              optical link layout of the bits are extracted from the OrscLink
- *              objects and loaded into two text files: one for each oRSC.
+ *              objects and loaded into a single text file.
  *
  * Author: D. Austin Belknap, UW-Madison
  */
@@ -49,8 +49,7 @@ class OrscLinkPatterns : public edm::EDAnalyzer {
     edm::Handle<L1CaloRegionCollection> newRegions;
     edm::Handle<L1CaloEmCollection> newEMCands;
 
-    std::ofstream outfile1;
-    std::ofstream outfile2;
+    std::ofstream outfile;
 };
 
 
@@ -68,6 +67,9 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   using std::endl;
 
   using namespace edm;
+
+  // Print event ID info
+  outfile << iEvent.id() << endl;
 
   // Grab Region and EM collections
   iEvent.getByLabel("uctDigis", newRegions);
@@ -88,56 +90,42 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     link_crate[egtCand->rctCrate()].addEM(*egtCand);
   }
 
-  // For each OrscLink crate object, print the optical link layouts into two
-  // text files.
+  // For each OrscLink crate object, print the optical link layouts into a text
+  // file.
   for (int i = 0; i < 18; ++i) {
     link_crate[i].populate_link_tables();
 
     std::vector<uint32_t> link1 = link_crate[i].link_values(1);
     std::vector<uint32_t> link2 = link_crate[i].link_values(2);
 
-    // Crates 0 to 8 got in file #1
-    if (i < 9) {
-      outfile1 << std::setw(2) << 2*i << " 4";
-      for (int j = 0; j < 6; ++j) {
-        outfile1 << " " << std::setw(9) << std::hex << int(link1.at(j)) << std::dec;
-      }
-      outfile1 << std::endl;
-      outfile1 << std::setw(2) << 2*i+1 << " 4";
-      for (int j = 0; j < 6; ++j) {
-        outfile1 << " " << std::setw(9) << std::hex << int(link2.at(j)) << std::dec;
-      }
-      outfile1 << std::endl;
+    // Print the contents of each link into the text file
+    outfile << std::setw(2) << std::uppercase << std::setfill('0');
+    outfile << "Crate " << std::setw(2) << i << " Link 1 ";
+
+    for (int j = 0; j < 24; ++j) {
+        outfile << " " << std::setw(2) << std::hex << int(link1.at(j)) << std::dec;
     }
-    // Crates 9 tp 17 go in file #2
-    else {
-      int I = i % 9;
-      outfile2 << std::setw(2) << 2*I << " 4";
-      for (int j = 0; j < 6; ++j) {
-        outfile2 << " " << std::setw(9) << std::hex << int(link1.at(j)) << std::dec;
-      }
-      outfile2 << std::endl;
-      outfile2 << std::setw(2) << 2*I+1 << " 4";
-      for (int j = 0; j < 6; ++j) {
-        outfile2 << " " << std::setw(9) << std::hex << int(link2.at(j)) << std::dec;
-      }
-      outfile2 << std::endl;
+
+    outfile << std::endl;
+    outfile << "Crate " << std::setw(2) << i << " Link 2 ";
+
+    for (int j = 0; j < 24; ++j) {
+        outfile << " " << std::setw(2) << std::hex << int(link2.at(j)) << std::dec;
     }
+    outfile << std::endl;
   }
 }
 
 
 void
 OrscLinkPatterns::beginJob() {
-  outfile1.open("example1.txt", std::ofstream::out);
-  outfile2.open("example2.txt", std::ofstream::out);
+  outfile.open("output.txt", std::ofstream::out);
 }
 
 
 void
 OrscLinkPatterns::endJob() {
-  outfile1.close();
-  outfile2.close();
+  outfile.close();
 }
 
 
