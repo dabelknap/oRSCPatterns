@@ -2,7 +2,8 @@
 
 ###Installation
 
-The current version of this code runs in `CMSSW_5_3_12`, which is an SLC5 CMSSW area. At Wisconsin, you must use `login02.hep.wisc.edu`.
+The current version of this code runs in `CMSSW_5_3_12`, which is an SLC5 CMSSW
+area. At Wisconsin, you must use `login02.hep.wisc.edu`.
 
 ```sh
 scram project -n orsc5312 CMSSW CMSSW_5_3_12
@@ -24,11 +25,21 @@ scram b -j 4
 ```
 
 ###Running
-This runs over a single event and produces two files: `example1.txt` and `example2.txt`. Each file contains the data for 18 optical links, represeting all 36 links for the full RCT system. We use two files to load onto two separate oRSCs for simulating full RCT at 904.
+This runs over a single event and produces two files: `example1.txt` and
+`example2.txt`. Each file contains the data for 18 optical links, represeting
+all 36 links for the full RCT system. We use two files to load onto two separate
+oRSCs for simulating full RCT at 904.
 ```sh
 cd L1Trigger/oRSCPatterns/test
 cmsRun makeOrscLinkPatterns.py
 ```
 
 ###Output Format
-The bit-fields that define the layout of the bits are defined in `src/OrscLinks.cc` as two tables: one for each link. The output text file contains 18 crates x 2 links = 36 lines per event. Each line contains 24 8-bit words. The first word printed corresponds to the top row of the bit-field in `src/OrscLinks.cc`, with the least-significant bit being the rightmost entry in the bit-field. An example output file is here: `doc/example_output.txt`. The file can contain multiple events, which are indicated by the event's event, run, and lumi number.
+The bit-fields that define the layout of the bits are defined in
+`src/OrscLinks.cc` as two tables: one for each link. The output text file
+contains 18 crates x 2 links = 36 lines per event. Each line contains 24 8-bit
+words. The first word printed corresponds to the top row of the bit-field in
+`src/OrscLinks.cc`, with the least-significant bit being the rightmost entry in
+the bit-field. An example output file is here: `doc/example_output.txt`. The
+file can contain multiple events, which are indicated by the event's event, run,
+and lumi number.
