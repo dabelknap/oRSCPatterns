@@ -21,33 +21,37 @@ def expected_counts():
     """
     out = {}
 
-    out["0"] = 18
-    out["ElecBC0"] = 2
-    out["JetBC0"] = 2
+    out["0"] = 50
 
     # For each RC
     for i in xrange(7):
         # For each region
         for j in xrange(2):
-            out["RCEtId[%i][%i]" % (i, j)] = 1
+            out["RCTau[%i][%i]" % (i, j)] = 1
+            out["RCOf[%i][%i]" % (i, j)] = 1
+            out["RCHad[%i][%i]" % (i, j)] = 1
             # For each bit
             for k in xrange(10):
-                out["RC[%i][%i][%i]" % (i, j, k)] = 1
+                out["RCEt[%i][%i][%i]" % (i, j, k)] = 1
+
+    # For each HF
+    for i in xrange(8):
+        out["HFFg[%i]" % (i)] = 1
+        # for each bit
+        for j in xrange(8):
+            out["HFEt[%i][%i]" % (i, j)] = 1
 
     # For each EG index
     for i in xrange(4):
-        out["IEReg[%i]" % i] = 1
-        out["NEReg[%i]" % i] = 1
-
-        # For each card bit
-        for j in xrange(3):
-            out["IECard[%i][%i]" % (i, j)] = 1
-            out["NECard[%i][%i]" % (i, j)] = 1
+        # For each card + region bit
+        for j in xrange(4):
+            out["IEPos[%i][%i]" % (i, j)] = 1
+            out["NEPos[%i][%i]" % (i, j)] = 1
 
         # For each bit
         for j in xrange(6):
-            out["IE[%i][%i]" % (i, j)] = 1
-            out["NE[%i][%i]" % (i, j)] = 1
+            out["IEEt[%i][%i]" % (i, j)] = 1
+            out["NEEt[%i][%i]" % (i, j)] = 1
 
     return out
 
@@ -59,7 +63,7 @@ def parse_file(infile):
     """
     S = infile.read()
 
-    pattern = "uint8_t L[12] \[16\]\[8\] = \{(.*?)\};"
+    pattern = "uint8_t L[12] \[24\]\[8\] = \{(.*?)\};"
 
     x = ",".join(re.findall(pattern, S, flags=re.DOTALL))
 
