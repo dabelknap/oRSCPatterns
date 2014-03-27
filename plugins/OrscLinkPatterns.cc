@@ -32,7 +32,7 @@
 #include "DataFormats/L1CaloTrigger/interface/L1CaloEmCand.h"
 #include "DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h"
 
-#include "L1Trigger/CaloLinks/include/CrateLinks.h"
+#include "L1Trigger/CaloLinks/include/CaloLinks.h"
 
 
 class OrscLinkPatterns : public edm::EDAnalyzer {
@@ -71,52 +71,27 @@ OrscLinkPatterns::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   using namespace edm;
 
-  // Print event ID info
-  outfile << iEvent.id() << endl;
-
   // Grab Region and EM collections
   iEvent.getByLabel("uctDigis", newRegions);
   iEvent.getByLabel("uctDigis", newEMCands);
 
-  // Create OrscLink objects for each crate
-  CrateLinks link_crate[18];
+  CaloLinks calolinks(iEvent.id().event(), iEvent.id().luminosityBlock(), iEvent.id().run());
 
   // Load each region into the OrscLink object of its crate
   for (L1CaloRegionCollection::const_iterator newRegion = newRegions->begin();
       newRegion != newRegions->end(); newRegion++) {
-    addRegion(link_crate[newRegion->rctCrate()], *newRegion);
+    addRegion(calolinks.get_crate(newRegion->rctCrate()), *newRegion);
   }
 
   // Load each EM Candidate into the OrscLink object of its crate
   for (L1CaloEmCollection::const_iterator egtCand = newEMCands->begin();
       egtCand != newEMCands->end(); egtCand++) {
-    addEM(link_crate[egtCand->rctCrate()], *egtCand);
+    addEM(calolinks.get_crate(egtCand->rctCrate()), *egtCand);
   }
 
   // For each OrscLink crate object, print the optical link layouts into a text
   // file.
-  for (int i = 0; i < 18; ++i) {
-    link_crate[i].populate_link_tables();
-
-    std::vector<uint8_t> link1 = link_crate[i].link_values(1);
-    std::vector<uint8_t> link2 = link_crate[i].link_values(2);
-
-    // Print the contents of each link into the text file
-    outfile << std::setw(2) << std::uppercase << std::setfill('0');
-    outfile << "Crate " << std::setw(2) << i << " Link 1 ";
-
-    for (int j = 0; j < 24; ++j) {
-        outfile << " " << std::setw(2) << std::hex << int(link1.at(j)) << std::dec;
-    }
-
-    outfile << std::endl;
-    outfile << "Crate " << std::setw(2) << i << " Link 2 ";
-
-    for (int j = 0; j < 24; ++j) {
-        outfile << " " << std::setw(2) << std::hex << int(link2.at(j)) << std::dec;
-    }
-    outfile << std::endl;
-  }
+  calolinks.write_to_file(outfile);
 }
 
 
