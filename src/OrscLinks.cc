@@ -116,17 +116,15 @@ OrscLinks::addEM(const L1CaloEmCand &cand) {
 
 
 /**
- * Output the link values as 24 8-bit integers.
+ * Output the link values as 6 32-bit integers.
  */
 std::vector<uint32_t>
 OrscLinks::link_values(int link_number) {
   std::vector<uint32_t> link;
 
-  uint8_t val;
+  uint32_t val = 0;
 
   for (int i = 0; i < 24; i++) {
-    val = 0;
-
     for (int j = 0; j < 8; j++) {
       val <<= 1;
 
@@ -137,10 +135,13 @@ OrscLinks::link_values(int link_number) {
         val |= Link2[i][j] & 0x1;
       }
       else {
-          throw std::invalid_argument("Invalid link number given");
+        throw std::invalid_argument("Invalid link number given");
       }
     }
-    link.push_back(val);
+    if (i % 4 == 3) {
+      link.push_back(val);
+      val = 0;
+    }
   }
   return link;
 }
