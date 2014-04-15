@@ -2,8 +2,9 @@
 
 ###Installation
 
-The current version of this code runs in `CMSSW_5_3_12`, which is an SLC5 CMSSW
-area. At Wisconsin, you must use `login02.hep.wisc.edu`.
+The current version of this code runs in `CMSSW_5_3_12` and `CMSSW_6_2_4`.
+`CMSSW_5_3_12` is an SLC5 CMSSW area; at Wisconsin, you must use
+`login02.hep.wisc.edu`.
 
 ```sh
 scram project -n orsc5312 CMSSW CMSSW_5_3_12
@@ -14,7 +15,7 @@ git cms-init
 
 git cms-addpkg DataFormats/L1CaloTrigger
 git cms-addpkg L1TriggerConfig/L1ScalesProducers
-git cms-cvs-history import  UCT2015_v4 L1Trigger/RegionalCaloTrigger
+git cms-addpkg L1Trigger/RegionalCaloTrigger
 
 git clone https://github.com/dabelknap/CaloLinks.git L1Trigger/CaloLinks
 
