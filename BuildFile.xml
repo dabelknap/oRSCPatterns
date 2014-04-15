@@ -1,4 +1,5 @@
 <use name="FWCore/Framework"/>
+<use name="L1Trigger/CaloLinks"/>
 <use name="FWCore/ParameterSet"/>
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="FWCore/ServiceRegistry"/>
